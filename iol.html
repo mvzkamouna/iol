@@ -123,7 +123,7 @@
 <body>
     <div class="container">
         <div class="font-size-adjuster">
-            <label>Schriftgröße:</label>
+            <label><b></b>Schriftgröße</b>:</label>
             <button onclick="adjustFontSize('small')">Kleiner</button>
             <button onclick="adjustFontSize('normal')">Normal</button>
             <button onclick="adjustFontSize('large')">Größer</button>
@@ -131,7 +131,7 @@
 
         <div id="introduction">
             <h1>Fragebogen zur Intraokularlinse</h1>
-            <p>Im Rahmen Ihrer Operation des Grauen Stars (Katarakt) wird Ihre getrübte Augenlinse durch eine künstliche Linse, eine sogenannte Intraokularlinse (IOL), ersetzt.</p>
+            <p>Im Rahmen Ihrer Operation des <b>Grauen Stars (Katarakt)</b> wird Ihre getrübte Augenlinse durch eine <b>künstliche Linse</b>, eine sogenannte Intraokularlinse (IOL), ersetzt.</p>
             <p>Wir möchten Ihnen mit diesem Fragebogen die gängigsten Intraokularlinsen vorstellen, die in unserer Klinik eingesetzt werden.</p>
             <button class="btn" onclick="startQuiz()">Fragebogen starten</button>
         </div>
@@ -139,7 +139,7 @@
         <form id="quizForm" style="display:none;">
             <div class="question" id="question1">
                 <p><strong>Wie wichtig ist Ihnen die Brillenunabhängigkeit im Alltag?</strong></p>
-                <label><input type="radio" name="q1" value="0" onclick="enableButton(1)">Nicht wichtig. Ich bin es gewohnt, eine Brille zu tragen und habe kein Problem damit.</label>
+                <label><input type="radio" name="q1" value="0" onclick="enableButton(1)"><b>Nicht wichtig</b>. Ich bin es gewohnt, eine Brille zu tragen und habe kein Problem damit.</label>
                 <label><input type="radio" name="q1" value="1" onclick="enableButton(1)">Mittelmäßig wichtig. Ich würde gerne weniger auf eine Brille angewiesen sein, aber es ist kein Muss.</label>
                 <label><input type="radio" name="q1" value="2" onclick="enableButton(1)">Sehr wichtig. Ich möchte so selten wie möglich eine Brille tragen.</label>
                 <button class="btn" id="btn1" disabled onclick="nextQuestion(event, 1)">Weiter</button>

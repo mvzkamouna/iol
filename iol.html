@@ -39,8 +39,14 @@
       box-sizing: border-box;
     }
 
-    h1, p {
+    /* Überschriften zentriert */
+    h1 {
       text-align: center;
+      margin-top: 0;
+    }
+    /* Absätze linksbündig für bessere Lesbarkeit */
+    p {
+      text-align: left;
       margin-top: 0;
     }
 
@@ -82,6 +88,7 @@
       margin-bottom: 15px;
       cursor: pointer;
       font-size: var(--base-font-size);
+      text-align: left; /* Auch Label-Text linksbündig */
     }
 
     input[type="radio"] {
@@ -127,7 +134,7 @@
       margin-top: 30px;
       font-size: 16px;
       color: red;
-      text-align: center;
+      text-align: left;
     }
 
     .button-container {
@@ -352,7 +359,6 @@
     /*****************************************************
      * Globale Variablen für Antworten
      *****************************************************/
-    // Wir speichern die Antworten in einem Objekt
     const userAnswers = {
       q1: null,
       q2: null,

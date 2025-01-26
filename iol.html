@@ -226,22 +226,29 @@
             if (score <= 2) {
                 resultText = `<strong>Sphärische Standardlinse</strong><br>
                               Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.`;
-                buttons = `<div>Möchten Sie mehr über andere Linsen erfahren?</div><div class="button-container"><button class="btn" onclick="showAlternative('EDOF-Linse')">EDOF-Linse</button><button class="btn" onclick="showAlternative('Asphärische Linse mit Blaufilter')">Asphärische Linse</button></div>`;
+                buttons = generateAlternativeButtons(['EDOF-Linse', 'Asphärische Linse mit Blaufilter']);
             } else if (score <= 6) {
                 resultText = `<strong>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</strong><br>
                               Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung) eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse. Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).<br><br>
                               <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`;
-                buttons = `<div>Möchten Sie mehr über andere Linsen erfahren?</div><div class="button-container"><button class="btn" onclick="showAlternative('Standardlinse')">Standardlinse</button><button class="btn" onclick="showAlternative('EDOF-Linse')">EDOF-Linse</button></div>`;
+                buttons = generateAlternativeButtons(['Standardlinse', 'EDOF-Linse']);
             } else {
                 resultText = `<strong>EDOF-Linse mit Tiefenschärfe (ca. 1000 € pro Auge)</strong><br>
                               Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.<br><br>
                               <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`;
-                buttons = `<div>Möchten Sie mehr über andere Linsen erfahren?</div><div class="button-container"><button class="btn" onclick="showAlternative('Standardlinse')">Standardlinse</button><button class="btn" onclick="showAlternative('Asphärische Linse mit Blaufilter')">Asphärische Linse</button></div>`;
+                buttons = generateAlternativeButtons(['Standardlinse', 'Asphärische Linse mit Blaufilter']);
             }
 
             resultDiv.innerHTML = `${resultText}<br><br>${buttons}`;
             resultDiv.style.display = 'block';
             document.getElementById('hint').style.display = 'block';
+        }
+
+        function generateAlternativeButtons(options) {
+            return `<div>Möchten Sie mehr über andere Linsen erfahren?</div>
+                    <div class="button-container">
+                        ${options.map(option => `<button class="btn" onclick="showAlternative('${option}')">${option}</button>`).join('')}
+                    </div>`;
         }
 
         const alternatives = {
@@ -257,7 +264,8 @@
 
         function showAlternative(option) {
             const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = alternatives[option];
+            const alternativeButtons = generateAlternativeButtons(Object.keys(alternatives).filter(o => o !== option));
+            resultDiv.innerHTML = `${alternatives[option]}<br><br>${alternativeButtons}`;
         }
     </script>
 </body>

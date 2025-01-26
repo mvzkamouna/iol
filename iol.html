@@ -2,15 +2,21 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1, maximum-scale=1">
     <title>Fragebogen zur Intraokularlinse</title>
     <style>
         :root {
             --base-font-size: 20px;
+            --button-padding: 15px;
+            --container-padding: 30px;
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --progress-bar-height: 10px;
+            --progress-bar-color: #76a659;
+            --progress-bar-background: #e0e0e0;
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: var(--font-family);
             margin: 0;
             padding: 0;
             background-color: #d9e7c7;
@@ -20,20 +26,35 @@
             align-items: center;
             min-height: 100vh;
             font-size: var(--base-font-size);
-            line-height: 2;
+            line-height: 1.6;
         }
 
         .container {
             max-width: 700px;
             background: #f4f8ec;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            padding: var(--container-padding);
+            border-radius: 16px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             width: 95%;
         }
 
         h1, p {
             text-align: center;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--progress-bar-background);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: var(--progress-bar-height);
+            background-color: var(--progress-bar-color);
+            transition: width 0.3s ease;
         }
 
         .question {
@@ -49,33 +70,37 @@
             display: block;
             margin-bottom: 15px;
             cursor: pointer;
+            font-size: 18px;
         }
 
         input[type="radio"] {
-            margin-right: 15px;
+            margin-right: 10px;
         }
 
         .result {
             display: none;
             margin-top: 30px;
-            padding: 25px;
+            padding: 20px;
             background-color: #e7f3fe;
             border-left: 6px solid #2196F3;
+            border-radius: 8px;
         }
 
         .btn {
             display: block;
-            width: fit-content;
-            padding: 15px;
+            width: calc(100% - 20px);
+            max-width: 400px;
+            padding: var(--button-padding);
             background-color: #93c47d;
             color: white;
             text-align: center;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 18px;
             margin: 15px auto;
             box-sizing: border-box;
+            transition: background-color 0.3s ease;
         }
 
         .btn:disabled {
@@ -89,14 +114,16 @@
 
         .hint {
             margin-top: 30px;
-            font-size: 18px;
+            font-size: 16px;
             color: red;
         }
 
         .button-container {
             display: flex;
-            justify-content: space-between;
+            flex-wrap: wrap;
+            justify-content: space-around;
             margin-top: 30px;
+            gap: 10px;
         }
 
         .font-size-adjuster {
@@ -105,9 +132,9 @@
         }
 
         .font-size-adjuster button {
-            margin: 0 10px;
+            margin: 0 5px;
             padding: 10px 20px;
-            font-size: 18px;
+            font-size: 16px;
             background-color: #93c47d;
             color: white;
             border: none;
@@ -137,6 +164,10 @@
         </div>
 
         <form id="quizForm" style="display:none;">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
             <div class="question" id="question1">
                 <p><strong>Wie wichtig ist Ihnen die Brillenunabhängigkeit im Alltag?</strong></p>
                 <label><input type="radio" name="q1" value="0" onclick="enableButton(1)"><b>Nicht wichtig</b>. Ich bin es gewohnt, eine Brille zu tragen und habe kein Problem damit.</label>
@@ -178,6 +209,8 @@
     </div>
 
     <script>
+        const totalQuestions = 4;
+
         function enableButton(questionNumber) {
             document.getElementById(`btn${questionNumber}`).disabled = false;
         }
@@ -192,10 +225,17 @@
             }
         }
 
+        function updateProgressBar(currentQuestion) {
+            const progressBar = document.getElementById('progressBar');
+            const progress = (currentQuestion / totalQuestions) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
         function startQuiz() {
             document.getElementById('introduction').style.display = 'none';
             document.getElementById('quizForm').style.display = 'block';
             showQuestion(1);
+            updateProgressBar(0);
         }
 
         function showQuestion(questionNumber) {
@@ -204,6 +244,7 @@
                 current.classList.remove('active');
             }
             document.getElementById(`question${questionNumber}`).classList.add('active');
+            updateProgressBar(questionNumber);
         }
 
         function nextQuestion(event, questionNumber) {
@@ -221,51 +262,45 @@
 
             const resultDiv = document.getElementById('result');
             let resultText = '';
-            let buttons = '';
 
             if (score <= 2) {
                 resultText = `<strong>Sphärische Standardlinse</strong><br>
                               Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.`;
-                buttons = generateAlternativeButtons(['EDOF-Linse', 'Asphärische Linse mit Blaufilter']);
             } else if (score <= 6) {
                 resultText = `<strong>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</strong><br>
                               Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung) eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse. Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).<br><br>
                               <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`;
-                buttons = generateAlternativeButtons(['Standardlinse', 'EDOF-Linse']);
             } else {
-                resultText = `<strong>EDOF-Linse mit Tiefenschärfe (ca. 1000 € pro Auge)</strong><br>
+                resultText = `<strong>EDOF-Linse mit Tiefenschärfe  (ca. 1000 € pro Auge)</strong><br>
                               Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.<br><br>
+                              Im Vergleich zu einer asphärischen Linse mit Blaufilter kann in seltenen Fällen neben störenden Lichtphänomenen das Kontrastsehen geringfügig schlechter sein. In der Regel ist diese Linse jedoch ein guter Kompromiss zwischen weitgehender Brillenunabhängigkeit und guter Sicht in der Ferne.<br><br>
                               <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`;
-                buttons = generateAlternativeButtons(['Standardlinse', 'Asphärische Linse mit Blaufilter']);
             }
 
-            resultDiv.innerHTML = `${resultText}<br><br>${buttons}`;
+            resultDiv.innerHTML = `${resultText}<br><br>Möchten Sie mehr über andere Linsen erfahren?<br><br>${generateAlternativeButtons(['Asphärische Linse mit Blaufilter', 'EDOF-Linse mit Tiefenschärfe'])}`;
             resultDiv.style.display = 'block';
             document.getElementById('hint').style.display = 'block';
         }
 
         function generateAlternativeButtons(options) {
-            return `<div>Möchten Sie mehr über andere Linsen erfahren?</div>
-                    <div class="button-container">
-                        ${options.map(option => `<button class="btn" onclick="showAlternative('${option}')">${option}</button>`).join('')}
-                    </div>`;
+            return `<div class="button-container">${options.map(option => `<button class="btn" onclick="showAlternative('${option}')">${option}</button>`).join('')}</div>`;
         }
 
-        const alternatives = {
-            "Standardlinse": `<strong>Sphärische Standardlinse</strong><br>
-                               Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.`,
-            "EDOF-Linse": `<strong>EDOF-Linse mit Tiefenschärfe (ca. 1000 € pro Auge)</strong><br>
-                            Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.<br><br>
-                            Im Vergleich zu einer asphärischen Linse mit Blaufilter kann in seltenen Fällen neben störenden Lichtphänomenen das Kontrastsehen geringfügig schlechter sein. In der Regel ist diese Linse jedoch ein guter Kompromiss zwischen weitgehender Brillenunabhängigkeit und guter Sicht in der Ferne.`,
-            "Asphärische Linse mit Blaufilter": `<strong>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</strong><br>
-                                                Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung) eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse. Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).<br><br>
-                                                <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`
-        };
-
         function showAlternative(option) {
+            const alternatives = {
+                "Sphärische Standardlinse": `<strong>Sphärische Standardlinse</strong><br>
+                                              Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.`,
+                "Asphärische Linse mit Blaufilter": `<strong>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</strong><br>
+                                                    Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung) eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse. Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).<br><br>
+                                                    <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`,
+                "EDOF-Linse mit Tiefenschärfe": `<strong>EDOF-Linse mit Tiefenschärfe  (ca. 1000 € pro Auge)</strong><br>
+                                                 Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.<br><br>
+                                                 Im Vergleich zu einer asphärischen Linse mit Blaufilter kann in seltenen Fällen neben störenden Lichtphänomenen das Kontrastsehen geringfügig schlechter sein. In der Regel ist diese Linse jedoch ein guter Kompromiss zwischen weitgehender Brillenunabhängigkeit und guter Sicht in der Ferne.<br><br>
+                                                 <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`
+            };
+
             const resultDiv = document.getElementById('result');
-            const alternativeButtons = generateAlternativeButtons(Object.keys(alternatives).filter(o => o !== option));
-            resultDiv.innerHTML = `${alternatives[option]}<br><br>${alternativeButtons}`;
+            resultDiv.innerHTML = `${alternatives[option]}<br><br>${generateAlternativeButtons(Object.keys(alternatives).filter(o => o !== option))}`;
         }
     </script>
 </body>

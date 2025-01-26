@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fragebogen zur Intraokularlinse</title>
+    <style>
+        :root {
+            --base-font-size: 20px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #d9e7c7;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-size: var(--base-font-size);
+            line-height: 2;
+        }
+
+        .container {
+            max-width: 700px;
+            background: #f4f8ec;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            width: 95%;
+        }
+
+        h1, p {
+            text-align: center;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        input[type="radio"] {
+            margin-right: 15px;
+        }
+
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+        }
+
+        .btn {
+            display: block;
+            width: fit-content;
+            padding: 15px;
+            background-color: #93c47d;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            margin: 15px auto;
+            box-sizing: border-box;
+        }
+
+        .btn:disabled {
+            background-color: #c0c0c0;
+            cursor: not-allowed;
+        }
+
+        .btn:hover:not(:disabled) {
+            background-color: #76a659;
+        }
+
+        .hint {
+            margin-top: 30px;
+            font-size: 18px;
+            color: red;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .font-size-adjuster {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .font-size-adjuster button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #93c47d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .font-size-adjuster button:hover {
+            background-color: #76a659;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="font-size-adjuster">
+            <label>Schriftgröße:</label>
+            <button onclick="adjustFontSize('small')">Kleiner</button>
+            <button onclick="adjustFontSize('normal')">Normal</button>
+            <button onclick="adjustFontSize('large')">Größer</button>
+        </div>
+
+        <div id="introduction">
+            <h1>Fragebogen zur Intraokularlinse</h1>
+            <p>Im Rahmen Ihrer Operation des Grauen Stars (Katarakt) wird Ihre getrübte Augenlinse durch eine künstliche Linse, eine sogenannte Intraokularlinse (IOL), ersetzt.</p>
+            <p>Wir möchten Ihnen mit diesem Fragebogen die gängigsten Intraokularlinsen vorstellen, die in unserer Klinik eingesetzt werden.</p>
+            <button class="btn" onclick="startQuiz()">Fragebogen starten</button>
+        </div>
+
+        <form id="quizForm" style="display:none;">
+            <div class="question" id="question1">
+                <p><strong>Wie wichtig ist Ihnen die Brillenunabhängigkeit im Alltag?</strong></p>
+                <label><input type="radio" name="q1" value="0" onclick="enableButton(1)">Nicht wichtig. Ich bin es gewohnt, eine Brille zu tragen und habe kein Problem damit.</label>
+                <label><input type="radio" name="q1" value="1" onclick="enableButton(1)">Mittelmäßig wichtig. Ich würde gerne weniger auf eine Brille angewiesen sein, aber es ist kein Muss.</label>
+                <label><input type="radio" name="q1" value="2" onclick="enableButton(1)">Sehr wichtig. Ich möchte so selten wie möglich eine Brille tragen.</label>
+                <button class="btn" id="btn1" disabled onclick="nextQuestion(event, 1)">Weiter</button>
+            </div>
+
+            <div class="question" id="question2">
+                <p><strong>Wie oft und wie lange verbringen Sie Zeit am Computer oder mit Tätigkeiten im mittleren Entfernungsbereich (ca. 60-80 cm)?</strong></p>
+                <label><input type="radio" name="q2" value="0" onclick="enableButton(2)">Selten bis gar nicht.</label>
+                <label><input type="radio" name="q2" value="1" onclick="enableButton(2)">Gelegentlich, etwa 1-2 Stunden pro Tag.</label>
+                <label><input type="radio" name="q2" value="2" onclick="enableButton(2)">Häufig, mehrere Stunden täglich.</label>
+                <button class="btn" id="btn2" disabled onclick="nextQuestion(event, 2)">Weiter</button>
+            </div>
+
+            <div class="question" id="question3">
+                <p><strong>Wie wichtig ist Ihnen gutes Sehen in der Dämmerung, z.B. bei schlechten Lichtverhältnissen im Straßenverkehr?</strong></p>
+                <label><input type="radio" name="q3" value="0" onclick="enableButton(3)">Nicht wichtig.</label>
+                <label><input type="radio" name="q3" value="1" onclick="enableButton(3)">Mittelmäßig wichtig.</label>
+                <label><input type="radio" name="q3" value="2" onclick="enableButton(3)">Das ist mir besonders wichtig.</label>
+                <button class="btn" id="btn3" disabled onclick="nextQuestion(event, 3)">Weiter</button>
+            </div>
+
+            <div class="question" id="question4">
+                <p><strong>Wie stehen Sie zu Zuzahlungen für eine Intraokularlinse, die Ihren Bedürfnissen entspricht?</strong></p>
+                <label><input type="radio" name="q4" value="0" onclick="enableButton(4)">Ich möchte keine Zuzahlungen leisten. Ich bevorzuge die Standardlinse, die von der Krankenkasse übernommen wird.</label>
+                <label><input type="radio" name="q4" value="1" onclick="enableButton(4)">Ich bin bereit, einen moderaten Betrag zuzuzahlen.</label>
+                <label><input type="radio" name="q4" value="2" onclick="enableButton(4)">Ich bin bereit, auch höhere Kosten zu tragen.</label>
+                <button class="btn" id="btn4" disabled onclick="showResult(event)">Ergebnis anzeigen</button>
+            </div>
+        </form>
+
+        <div class="result" id="result"></div>
+        <div class="hint" id="hint" style="display:none;">
+            Hinweis:<br>
+            Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe. Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren. Wenn Sie an einer anderen Intraokularlinse als der Standardlinse interessiert sind, teilen Sie uns dies bitte mit. So können wir vor Ihrem Gespräch mit unseren Ärzten alle nötigen Untersuchungen durchführen und Sie bestmöglich beraten.
+        </div>
+    </div>
+
+    <script>
+        function enableButton(questionNumber) {
+            document.getElementById(`btn${questionNumber}`).disabled = false;
+        }
+
+        function adjustFontSize(size) {
+            if (size === 'small') {
+                document.documentElement.style.setProperty('--base-font-size', '18px');
+            } else if (size === 'large') {
+                document.documentElement.style.setProperty('--base-font-size', '24px');
+            } else {
+                document.documentElement.style.setProperty('--base-font-size', '20px');
+            }
+        }
+
+        function startQuiz() {
+            document.getElementById('introduction').style.display = 'none';
+            document.getElementById('quizForm').style.display = 'block';
+            showQuestion(1);
+        }
+
+        function showQuestion(questionNumber) {
+            const current = document.querySelector('.question.active');
+            if (current) {
+                current.classList.remove('active');
+            }
+            document.getElementById(`question${questionNumber}`).classList.add('active');
+        }
+
+        function nextQuestion(event, questionNumber) {
+            event.preventDefault();
+            showQuestion(questionNumber + 1);
+        }
+
+        function showResult(event) {
+            event.preventDefault();
+            const answers = document.querySelectorAll('input[type="radio"]:checked');
+            let score = 0;
+            answers.forEach(answer => {
+                score += parseInt(answer.value, 10);
+            });
+
+            const resultDiv = document.getElementById('result');
+            let resultText = '';
+            let buttons = '';
+
+            if (score <= 2) {
+                resultText = `<strong>Sphärische Standardlinse</strong><br>
+                              Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.`;
+                buttons = `<div>Möchten Sie mehr über andere Linsen erfahren?</div><div class="button-container"><button class="btn" onclick="showAlternative('EDOF-Linse')">EDOF-Linse</button><button class="btn" onclick="showAlternative('Asphärische Linse mit Blaufilter')">Asphärische Linse</button></div>`;
+            } else if (score <= 6) {
+                resultText = `<strong>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</strong><br>
+                              Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung) eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse. Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).<br><br>
+                              <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`;
+                buttons = `<div>Möchten Sie mehr über andere Linsen erfahren?</div><div class="button-container"><button class="btn" onclick="showAlternative('Standardlinse')">Standardlinse</button><button class="btn" onclick="showAlternative('EDOF-Linse')">EDOF-Linse</button></div>`;
+            } else {
+                resultText = `<strong>EDOF-Linse mit Tiefenschärfe (ca. 1000 € pro Auge)</strong><br>
+                              Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.<br><br>
+                              <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`;
+                buttons = `<div>Möchten Sie mehr über andere Linsen erfahren?</div><div class="button-container"><button class="btn" onclick="showAlternative('Standardlinse')">Standardlinse</button><button class="btn" onclick="showAlternative('Asphärische Linse mit Blaufilter')">Asphärische Linse</button></div>`;
+            }
+
+            resultDiv.innerHTML = `${resultText}<br><br>${buttons}`;
+            resultDiv.style.display = 'block';
+            document.getElementById('hint').style.display = 'block';
+        }
+
+        const alternatives = {
+            "Standardlinse": `<strong>Sphärische Standardlinse</strong><br>
+                               Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.`,
+            "EDOF-Linse": `<strong>EDOF-Linse mit Tiefenschärfe (ca. 1000 € pro Auge)</strong><br>
+                            Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.<br><br>
+                            Im Vergleich zu einer asphärischen Linse mit Blaufilter kann in seltenen Fällen neben störenden Lichtphänomenen das Kontrastsehen geringfügig schlechter sein. In der Regel ist diese Linse jedoch ein guter Kompromiss zwischen weitgehender Brillenunabhängigkeit und guter Sicht in der Ferne.`,
+            "Asphärische Linse mit Blaufilter": `<strong>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</strong><br>
+                                                Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung) eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse. Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).<br><br>
+                                                <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`
+        };
+
+        function showAlternative(option) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = alternatives[option];
+        }
+    </script>
+</body>
+</html>

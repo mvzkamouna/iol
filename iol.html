@@ -1,308 +1,430 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1, maximum-scale=1">
-    <title>Fragebogen zur Intraokularlinse</title>
-    <style>
-        :root {
-            --base-font-size: 20px;
-            --button-padding: 15px;
-            --container-padding: 30px;
-            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            --progress-bar-height: 10px;
-            --progress-bar-color: #76a659;
-            --progress-bar-background: #e0e0e0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Fragebogen zur Intraokularlinse</title>
+  <style>
+    :root {
+      --base-font-size: 20px;
+      --button-padding: 15px;
+      --container-padding: 30px;
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --progress-bar-height: 10px;
+      --progress-bar-color: #76a659;
+      --progress-bar-background: #e0e0e0;
+    }
 
-        body {
-            font-family: var(--font-family);
-            margin: 0;
-            padding: 0;
-            background-color: #d9e7c7;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-size: var(--base-font-size);
-            line-height: 1.6;
-        }
+    body {
+      font-family: var(--font-family);
+      margin: 0;
+      padding: 0;
+      background-color: #d9e7c7;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-size: var(--base-font-size);
+      line-height: 1.6;
+    }
 
-        .container {
-            max-width: 700px;
-            background: #f4f8ec;
-            padding: var(--container-padding);
-            border-radius: 16px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            width: 95%;
-        }
+    .container {
+      max-width: 700px;
+      background: #f4f8ec;
+      padding: var(--container-padding);
+      border-radius: 16px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      width: 95%;
+      box-sizing: border-box;
+    }
 
-        h1, p {
-            text-align: center;
-        }
+    h1, p {
+      text-align: center;
+      margin-top: 0;
+    }
 
-        .progress-bar-container {
-            width: 100%;
-            background-color: var(--progress-bar-background);
-            border-radius: 5px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
+    /* Alle Sections standardmäßig ausblenden */
+    section {
+      display: none;
+    }
+    /* Nur die "aktive" Section wird angezeigt */
+    section.active {
+      display: block;
+    }
 
-        .progress-bar {
-            width: 0%;
-            height: var(--progress-bar-height);
-            background-color: var(--progress-bar-color);
-            transition: width 0.3s ease;
-        }
+    .btn {
+      display: block;
+      width: calc(100% - 20px);
+      max-width: 400px;
+      padding: var(--button-padding);
+      background-color: #93c47d;
+      color: white;
+      text-align: center;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      margin: 15px auto;
+      box-sizing: border-box;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover:not(:disabled) {
+      background-color: #76a659;
+    }
+    .btn:disabled {
+      background-color: #c0c0c0;
+      cursor: not-allowed;
+    }
 
-        .question {
-            margin-bottom: 30px;
-            display: none;
-        }
+    label {
+      display: block;
+      margin-bottom: 15px;
+      cursor: pointer;
+      font-size: var(--base-font-size);
+    }
 
-        .question.active {
-            display: block;
-        }
+    input[type="radio"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
 
-        label {
-            display: block;
-            margin-bottom: 15px;
-            cursor: pointer;
-            font-size: var(--base-font-size);
-        }
+    .font-size-adjuster {
+      margin-bottom: 30px;
+      text-align: center;
+    }
 
-        input[type="radio"] {
-            margin-right: 10px;
-            transform: scale(1.2); /* Vergrößert die Checkbox bei Schriftgrößenänderung */
-        }
+    .font-size-adjuster button {
+      margin: 0 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #93c47d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .font-size-adjuster button:hover {
+      background-color: #76a659;
+    }
 
-        .result {
-            display: none;
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #e7f3fe;
-            border-left: 6px solid #2196F3;
-            border-radius: 8px;
-        }
+    /* Fortschrittsbalken */
+    .progress-bar-container {
+      width: 100%;
+      background-color: var(--progress-bar-background);
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    .progress-bar {
+      width: 0%;
+      height: var(--progress-bar-height);
+      background-color: var(--progress-bar-color);
+      transition: width 0.3s ease;
+    }
 
-        .btn {
-            display: block;
-            width: calc(100% - 20px);
-            max-width: 400px;
-            padding: var(--button-padding);
-            background-color: #93c47d;
-            color: white;
-            text-align: center;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            margin: 15px auto;
-            box-sizing: border-box;
-            transition: background-color 0.3s ease;
-        }
+    .hint {
+      margin-top: 30px;
+      font-size: 16px;
+      color: red;
+      text-align: center;
+    }
 
-        .btn:disabled {
-            background-color: #c0c0c0;
-            cursor: not-allowed;
-        }
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
 
-        .btn:hover:not(:disabled) {
-            background-color: #76a659;
-        }
-
-        .hint {
-            margin-top: 30px;
-            font-size: 16px;
-            color: red;
-        }
-
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin-top: 30px;
-            gap: 10px;
-        }
-
-        .font-size-adjuster {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .font-size-adjuster button {
-            margin: 0 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #93c47d;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .font-size-adjuster button:hover {
-            background-color: #76a659;
-        }
-    </style>
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="font-size-adjuster">
-            <label>Schriftgröße:</label>
-            <button onclick="adjustFontSize('small')">Kleiner</button>
-            <button onclick="adjustFontSize('normal')">Normal</button>
-            <button onclick="adjustFontSize('large')">Größer</button>
-        </div>
+  <div class="container">
 
-        <div id="introduction">
-            <h1>Fragebogen zur Intraokularlinse</h1>
-            <p>Im Rahmen Ihrer Operation des <b>Grauen Stars (Katarakt)</b> wird Ihre getrübte Augenlinse durch eine <b>künstliche Linse</b>, eine sogenannte Intraokularlinse (IOL), ersetzt.</p>
-            <p>Wir möchten Ihnen mit diesem <b>Fragebogen</b> die gängigsten Intraokularlinsen vorstellen, die in unserer Klinik eingesetzt werden.</p>
-            <button class="btn" onclick="startQuiz()">Fragebogen starten</button>
-        </div>
-
-        <form id="quizForm" style="display:none;">
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-
-            <div class="question" id="question1">
-                <p><strong>Wie wichtig ist Ihnen die Brillenunabhängigkeit im Alltag?</strong></p>
-                <label><input type="radio" name="q1" value="0" onclick="enableButton(1)"><b>Nicht wichtig</b>. Ich bin es gewohnt, eine Brille zu tragen und habe kein Problem damit.</label>
-                <label><input type="radio" name="q1" value="1" onclick="enableButton(1)"><b>Mittelmäßig wichtig</b>. Ich würde gerne weniger auf eine Brille angewiesen sein, aber es ist kein Muss.</label>
-                <label><input type="radio" name="q1" value="2" onclick="enableButton(1)"><b>Sehr wichtig</b>. Ich möchte so selten wie möglich eine Brille tragen.</label>
-                <button class="btn" id="btn1" disabled onclick="nextQuestion(event, 1)">Weiter</button>
-            </div>
-
-            <div class="question" id="question2">
-                <p><strong>Wie oft und wie lange verbringen Sie Zeit am Computer oder mit Tätigkeiten im mittleren Entfernungsbereich (ca. 60-80 cm)?</strong></p>
-                <label><input type="radio" name="q2" value="0" onclick="enableButton(2)"><b>Selten</b> bis gar nicht.</label>
-                <label><input type="radio" name="q2" value="1" onclick="enableButton(2)"><b>Gelegentlich</b>, etwa 1-2 Stunden pro Tag.</label>
-                <label><input type="radio" name="q2" value="2" onclick="enableButton(2)"><b>Häufig</b>, mehrere Stunden täglich.</label>
-                <button class="btn" id="btn2" disabled onclick="nextQuestion(event, 2)">Weiter</button>
-            </div>
-
-            <div class="question" id="question3">
-                <p><strong>Wie wichtig ist Ihnen gutes Sehen in der Dämmerung, z.B. bei schlechten Lichtverhältnissen im Straßenverkehr?</strong></p>
-                <label><input type="radio" name="q3" value="0" onclick="enableButton(3)"><b>Nicht</b> wichtig.</label>
-                <label><input type="radio" name="q3" value="1" onclick="enableButton(3)"><b>Mittelmäßig</b> wichtig.</label>
-                <label><input type="radio" name="q3" value="2" onclick="enableButton(3)">Das ist mir <b>besonders</b> wichtig.</label>
-                <button class="btn" id="btn3" disabled onclick="nextQuestion(event, 3)">Weiter</button>
-            </div>
-
-            <div class="question" id="question4">
-                <p><strong>Wie stehen Sie zu Zuzahlungen für eine Intraokularlinse, die Ihren Bedürfnissen entspricht?</strong></p>
-                <label><input type="radio" name="q4" value="0" onclick="enableButton(4)">Ich möchte <b>keine</b> Zuzahlungen leisten. Ich bevorzuge die Standardlinse, die von der Krankenkasse übernommen wird.</label>
-                <label><input type="radio" name="q4" value="1" onclick="enableButton(4)">Ich bin bereit, einen <b>moderaten</b> Betrag zuzuzahlen.</label>
-                <label><input type="radio" name="q4" value="2" onclick="enableButton(4)">Ich bin bereit, auch <b>höhere</b> Kosten zu tragen.</label>
-                <button class="btn" id="btn4" disabled onclick="showResult(event)">Ergebnis anzeigen – klicken und nach unten navigieren:</button>
-            </div>
-        </form>
-
-        <div class="result" id="result"></div>
-        <div class="hint" id="hint" style="display:none;">
-            Hinweis:<br>
-            Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe. Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.  
-        </div>
+    <!-- Schriftgrößen-Anpassung -->
+    <div class="font-size-adjuster">
+      <label>Schriftgröße:</label>
+      <button onclick="adjustFontSize('small')">Kleiner</button>
+      <button onclick="adjustFontSize('normal')">Normal</button>
+      <button onclick="adjustFontSize('large')">Größer</button>
     </div>
 
-    <script>
-        const totalQuestions = 4;
+    <!-- SECTION: INTRODUCTION -->
+    <section id="introduction" class="active">
+      <h1>Fragebogen zur Intraokularlinse</h1>
+      <p>
+        Im Rahmen Ihrer Operation des <b>Grauen Stars (Katarakt)</b> wird Ihre getrübte Augenlinse
+        durch eine <b>künstliche Linse</b>, eine sogenannte Intraokularlinse (IOL), ersetzt.
+      </p>
+      <p>
+        Wir möchten Ihnen mit diesem <b>Fragebogen</b> die gängigsten Intraokularlinsen vorstellen,
+        die in unserer Klinik eingesetzt werden.
+      </p>
+      <button class="btn" onclick="goToSection('question1')">Fragebogen starten</button>
+    </section>
 
-        function enableButton(questionNumber) {
-            document.getElementById(`btn${questionNumber}`).disabled = false;
-        }
+    <!-- SECTION: QUESTION 1 -->
+    <section id="question1">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress1"></div>
+      </div>
+      <p><strong>Wie wichtig ist Ihnen die Brillenunabhängigkeit im Alltag?</strong></p>
+      <label>
+        <input type="radio" name="q1" value="0" onclick="enableNext('btnQ1', 'progress1', 1)">
+        <b>Nicht wichtig</b>. Ich bin es gewohnt, eine Brille zu tragen und habe kein Problem damit.
+      </label>
+      <label>
+        <input type="radio" name="q1" value="1" onclick="enableNext('btnQ1', 'progress1', 1)">
+        <b>Mittelmäßig wichtig</b>. Ich würde gerne weniger auf eine Brille angewiesen sein, aber es ist kein Muss.
+      </label>
+      <label>
+        <input type="radio" name="q1" value="2" onclick="enableNext('btnQ1', 'progress1', 1)">
+        <b>Sehr wichtig</b>. Ich möchte so selten wie möglich eine Brille tragen.
+      </label>
+      <button class="btn" id="btnQ1" disabled onclick="goToSection('question2')">Weiter</button>
+    </section>
 
-        function adjustFontSize(size) {
-            if (size === 'small') {
-                document.documentElement.style.setProperty('--base-font-size', '18px');
-            } else if (size === 'large') {
-                document.documentElement.style.setProperty('--base-font-size', '24px');
-            } else {
-                document.documentElement.style.setProperty('--base-font-size', '20px');
-            }
-        }
+    <!-- SECTION: QUESTION 2 -->
+    <section id="question2">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress2"></div>
+      </div>
+      <p><strong>Wie oft und wie lange verbringen Sie Zeit am Computer oder mit Tätigkeiten im mittleren Entfernungsbereich (ca. 60-80 cm)?</strong></p>
+      <label>
+        <input type="radio" name="q2" value="0" onclick="enableNext('btnQ2', 'progress2', 2)">
+        <b>Selten</b> bis gar nicht.
+      </label>
+      <label>
+        <input type="radio" name="q2" value="1" onclick="enableNext('btnQ2', 'progress2', 2)">
+        <b>Gelegentlich</b>, etwa 1-2 Stunden pro Tag.
+      </label>
+      <label>
+        <input type="radio" name="q2" value="2" onclick="enableNext('btnQ2', 'progress2', 2)">
+        <b>Häufig</b>, mehrere Stunden täglich.
+      </label>
+      <button class="btn" id="btnQ2" disabled onclick="goToSection('question3')">Weiter</button>
+    </section>
 
-        function updateProgressBar(currentQuestion) {
-            const progressBar = document.getElementById('progressBar');
-            const progress = (currentQuestion / totalQuestions) * 100;
-            progressBar.style.width = `${progress}%`;
-        }
+    <!-- SECTION: QUESTION 3 -->
+    <section id="question3">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress3"></div>
+      </div>
+      <p><strong>Wie wichtig ist Ihnen gutes Sehen in der Dämmerung, z.B. bei schlechten Lichtverhältnissen im Straßenverkehr?</strong></p>
+      <label>
+        <input type="radio" name="q3" value="0" onclick="enableNext('btnQ3', 'progress3', 3)">
+        <b>Nicht</b> wichtig.
+      </label>
+      <label>
+        <input type="radio" name="q3" value="1" onclick="enableNext('btnQ3', 'progress3', 3)">
+        <b>Mittelmäßig</b> wichtig.
+      </label>
+      <label>
+        <input type="radio" name="q3" value="2" onclick="enableNext('btnQ3', 'progress3', 3)">
+        Das ist mir <b>besonders</b> wichtig.
+      </label>
+      <button class="btn" id="btnQ3" disabled onclick="goToSection('question4')">Weiter</button>
+    </section>
 
-        function startQuiz() {
-            document.getElementById('introduction').style.display = 'none';
-            document.getElementById('quizForm').style.display = 'block';
-            showQuestion(1);
-            updateProgressBar(0);
-        }
+    <!-- SECTION: QUESTION 4 -->
+    <section id="question4">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress4"></div>
+      </div>
+      <p><strong>Wie stehen Sie zu Zuzahlungen für eine Intraokularlinse, die Ihren Bedürfnissen entspricht?</strong></p>
+      <label>
+        <input type="radio" name="q4" value="0" onclick="enableNext('btnQ4', 'progress4', 4)">
+        Ich möchte <b>keine</b> Zuzahlungen leisten. Ich bevorzuge die Standardlinse, die von der Krankenkasse übernommen wird.
+      </label>
+      <label>
+        <input type="radio" name="q4" value="1" onclick="enableNext('btnQ4', 'progress4', 4)">
+        Ich bin bereit, einen <b>moderaten</b> Betrag zuzuzahlen.
+      </label>
+      <label>
+        <input type="radio" name="q4" value="2" onclick="enableNext('btnQ4', 'progress4', 4)">
+        Ich bin bereit, auch <b>höhere</b> Kosten zu tragen.
+      </label>
+      <button class="btn" id="btnQ4" disabled onclick="calculateResult()">Ergebnis anzeigen</button>
 
-        function showQuestion(questionNumber) {
-            const current = document.querySelector('.question.active');
-            if (current) {
-                current.classList.remove('active');
-            }
-            document.getElementById(`question${questionNumber}`).classList.add('active');
-            updateProgressBar(questionNumber);
-        }
+      <!-- Hinweis nur informativ, wird hier automatisch eingeblendet -->
+      <p class="hint" id="finalHint" style="display: none;">
+        Hinweis:<br />
+        Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen
+        und möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe.
+        Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
+      </p>
+    </section>
 
-        function nextQuestion(event, questionNumber) {
-            event.preventDefault();
-            showQuestion(questionNumber + 1);
-        }
+    <!-- SECTION: STANDARDLINSE -->
+    <section id="standardLinse">
+      <h1>Sphärische Standardlinse</h1>
+      <p>
+        Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille
+        für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute
+        Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.
+      </p>
 
-        function showResult(event) {
-            event.preventDefault();
-            const answers = document.querySelectorAll('input[type="radio"]:checked');
-            let score = 0;
-            answers.forEach(answer => {
-                score += parseInt(answer.value, 10);
-            });
+      <div class="button-container">
+        <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
+        <button class="btn" onclick="goToSection('asphaerischeLinse')">
+          Asphärische Linse mit Blaufilter
+        </button>
+        <button class="btn" onclick="goToSection('edofLinse')">
+          EDOF-Linse mit Tiefenschärfe
+        </button>
+      </div>
 
-            const resultDiv = document.getElementById('result');
-            let resultText = '';
+      <!-- Roter Hinweis am Seitenende -->
+      <p class="hint">
+        Hinweis:<br>
+        Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
+        möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe.
+        Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
+      </p>
+    </section>
 
-            if (score <= 2) {
-                resultText = `<strong>Sphärische Standardlinse</strong><br>
-                              Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.`;
-            } else if (score <= 6) {
-                resultText = `<strong>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</strong><br>
-                              Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung) eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse. Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).<br><br>
-                              <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`;
-            } else {
-                resultText = `<strong>EDOF-Linse mit Tiefenschärfe  (ca. 1000 € pro Auge)</strong><br>
-                              Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.<br><br>
-                              Im Vergleich zu einer asphärischen Linse mit Blaufilter kann in seltenen Fällen neben störenden Lichtphänomenen das Kontrastsehen geringfügig schlechter sein. In der Regel ist diese Linse jedoch ein guter Kompromiss zwischen weitgehender Brillenunabhängigkeit und guter Sicht in der Ferne.<br><br>
-                              <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`;
-            }
+    <!-- SECTION: ASPHÄRISCHE LINSE -->
+    <section id="asphaerischeLinse">
+      <h1>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</h1>
+      <p>
+        Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung)
+        eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse.
+        Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen
+        (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).
+      </p>
+      <p>
+        <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch,
+        bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>
+      </p>
 
-            resultDiv.innerHTML = `${resultText}<br><br>Möchten Sie mehr über andere Linsen erfahren?<br><br>${generateAlternativeButtons(['Asphärische Linse mit Blaufilter', 'EDOF-Linse mit Tiefenschärfe'])}`;
-            resultDiv.style.display = 'block';
-            document.getElementById('hint').style.display = 'block';
-        }
+      <div class="button-container">
+        <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
+        <button class="btn" onclick="goToSection('standardLinse')">Sphärische Standardlinse</button>
+        <button class="btn" onclick="goToSection('edofLinse')">EDOF-Linse mit Tiefenschärfe</button>
+      </div>
 
-        function generateAlternativeButtons(options) {
-            return `<div class="button-container">${options.map(option => `<button class="btn" onclick="showAlternative('${option}')">${option}</button>`).join('')}</div>`;
-        }
+      <!-- Roter Hinweis -->
+      <p class="hint">
+        Hinweis:<br>
+        Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
+        möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe.
+        Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
+      </p>
+    </section>
 
-        function showAlternative(option) {
-            const alternatives = {
-                "Sphärische Standardlinse": `<strong>Sphärische Standardlinse</strong><br>
-                                              Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.`,
-                "Asphärische Linse mit Blaufilter": `<strong>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</strong><br>
-                                                    Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung) eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse. Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).<br><br>
-                                                    <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`,
-                "EDOF-Linse mit Tiefenschärfe": `<strong>EDOF-Linse mit Tiefenschärfe  (ca. 1000 € pro Auge)</strong><br>
-                                                 Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.<br><br>
-                                                 Im Vergleich zu einer asphärischen Linse mit Blaufilter kann in seltenen Fällen neben störenden Lichtphänomenen das Kontrastsehen geringfügig schlechter sein. In der Regel ist diese Linse jedoch ein guter Kompromiss zwischen weitgehender Brillenunabhängigkeit und guter Sicht in der Ferne.<br><br>
-                                                 <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch, bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>`
-            };
+    <!-- SECTION: EDOF-LINSE -->
+    <section id="edofLinse">
+      <h1>EDOF-Linse mit Tiefenschärfe (ca. 1000 € pro Auge)</h1>
+      <p>
+        Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe
+        vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen
+        in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.
+      </p>
+      <p>
+        Im Vergleich zu einer asphärischen Linse mit Blaufilter kann in seltenen Fällen neben störenden Lichtphänomenen
+        das Kontrastsehen geringfügig schlechter sein. In der Regel ist diese Linse jedoch ein guter Kompromiss
+        zwischen weitgehender Brillenunabhängigkeit und guter Sicht in der Ferne.
+      </p>
+      <p>
+        <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch,
+        bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>
+      </p>
 
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `${alternatives[option]}<br><br>${generateAlternativeButtons(Object.keys(alternatives).filter(o => o !== option))}`;
-        }
-    </script>
+      <div class="button-container">
+        <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
+        <button class="btn" onclick="goToSection('standardLinse')">Sphärische Standardlinse</button>
+        <button class="btn" onclick="goToSection('asphaerischeLinse')">Asphärische Linse</button>
+      </div>
+
+      <!-- Roter Hinweis -->
+      <p class="hint">
+        Hinweis:<br>
+        Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
+        möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe.
+        Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    /*****************************************************
+     * Globale Variablen für Antworten
+     *****************************************************/
+    // Wir speichern die Antworten in einem Objekt
+    const userAnswers = {
+      q1: null,
+      q2: null,
+      q3: null,
+      q4: null,
+    };
+
+    /*****************************************************
+     * Schriftgröße
+     *****************************************************/
+    function adjustFontSize(size) {
+      if (size === "small") {
+        document.documentElement.style.setProperty("--base-font-size", "18px");
+      } else if (size === "large") {
+        document.documentElement.style.setProperty("--base-font-size", "24px");
+      } else {
+        document.documentElement.style.setProperty("--base-font-size", "20px");
+      }
+    }
+
+    /*****************************************************
+     * Sections anzeigen/verstecken
+     *****************************************************/
+    function goToSection(sectionId) {
+      // Alle Sections ausblenden
+      const sections = document.querySelectorAll("section");
+      sections.forEach(sec => sec.classList.remove("active"));
+      // Gewünschte Section einblenden
+      document.getElementById(sectionId).classList.add("active");
+      // Nach oben scrollen
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    /*****************************************************
+     * Button aktivieren + Fortschrittsbalken
+     *****************************************************/
+    function enableNext(buttonId, progressId, questionNumber) {
+      // Button aktivieren
+      const btn = document.getElementById(buttonId);
+      btn.disabled = false;
+
+      // Antwortwert speichern
+      const name = "q" + questionNumber;
+      const val = document.querySelector(`input[name='${name}']:checked`).value;
+      userAnswers[name] = parseInt(val, 10);
+
+      // Fortschritt (z.B. questionNumber / 4)
+      const totalQuestions = 4;
+      const progressValue = (questionNumber / totalQuestions) * 100;
+      const progressBar = document.getElementById(progressId);
+      progressBar.style.width = progressValue + "%";
+    }
+
+    /*****************************************************
+     * Ergebnis berechnen und weiterleiten
+     *****************************************************/
+    function calculateResult() {
+      const { q1, q2, q3, q4 } = userAnswers;
+      const score = (q1 ?? 0) + (q2 ?? 0) + (q3 ?? 0) + (q4 ?? 0);
+
+      // Hinweis unter Frage 4 einblenden
+      document.getElementById("finalHint").style.display = "block";
+
+      // Grenzen anpassen, wenn gewünscht
+      if (score <= 2) {
+        goToSection("standardLinse");
+      } else if (score <= 6) {
+        goToSection("asphaerischeLinse");
+      } else {
+        goToSection("edofLinse");
+      }
+    }
+  </script>
 </body>
 </html>

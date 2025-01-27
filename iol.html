@@ -180,6 +180,19 @@
     .intro-two-options strong {
       font-weight: bold;
     }
+
+    /* Zusätzlicher Kasten für torische Hinweise => initially hidden */
+    .toric-hint {
+      display: none; 
+      margin: 15px 0;
+      padding: 15px;
+      background-color: #e8f9e8;
+      border: 2px dashed #76a659;
+      border-radius: 8px;
+    }
+    .toric-hint strong {
+      color: #317b2b;
+    }
   </style>
 </head>
 <body>
@@ -214,15 +227,15 @@
       </div>
       <p><strong>Wie wichtig ist Ihnen die Brillenunabhängigkeit im Alltag?</strong></p>
       <label>
-        <input type="radio" name="q1" value="0" onclick="enableNext('btnQ1', 'progress1', 1)">
+        <input type="radio" name="q1" value="0" onclick="enableNext('btnQ1','progress1',1)">
         <b>Nicht wichtig</b>. Ich bin es gewohnt, eine Brille zu tragen und habe kein Problem damit.
       </label>
       <label>
-        <input type="radio" name="q1" value="1" onclick="enableNext('btnQ1', 'progress1', 1)">
+        <input type="radio" name="q1" value="1" onclick="enableNext('btnQ1','progress1',1)">
         <b>Mittelmäßig wichtig</b>. Ich würde gerne weniger auf eine Brille angewiesen sein, aber es ist kein Muss.
       </label>
       <label>
-        <input type="radio" name="q1" value="2" onclick="enableNext('btnQ1', 'progress1', 1)">
+        <input type="radio" name="q1" value="2" onclick="enableNext('btnQ1','progress1',1)">
         <b>Sehr wichtig</b>. Ich möchte so selten wie möglich eine Brille tragen.
       </label>
       <button class="btn" id="btnQ1" disabled onclick="goToSection('question2')">Weiter</button>
@@ -233,17 +246,17 @@
       <div class="progress-bar-container">
         <div class="progress-bar" id="progress2"></div>
       </div>
-      <p><strong>Wie oft und wie lange verbringen Sie Zeit am Computer oder mit Tätigkeiten im mittleren Entfernungsbereich (ca. 60-80 cm)?</strong></p>
+      <p><strong>Wie oft und wie lange verbringen Sie Zeit am Computer oder mit Tätigkeiten im mittleren Entfernungsbereich (ca. 60–80 cm)?</strong></p>
       <label>
-        <input type="radio" name="q2" value="0" onclick="enableNext('btnQ2', 'progress2', 2)">
+        <input type="radio" name="q2" value="0" onclick="enableNext('btnQ2','progress2',2)">
         <b>Selten</b> bis gar nicht.
       </label>
       <label>
-        <input type="radio" name="q2" value="1" onclick="enableNext('btnQ2', 'progress2', 2)">
+        <input type="radio" name="q2" value="1" onclick="enableNext('btnQ2','progress2',2)">
         <b>Gelegentlich</b>, etwa 1-2 Stunden pro Tag.
       </label>
       <label>
-        <input type="radio" name="q2" value="2" onclick="enableNext('btnQ2', 'progress2', 2)">
+        <input type="radio" name="q2" value="2" onclick="enableNext('btnQ2','progress2',2)">
         <b>Häufig</b>, mehrere Stunden täglich.
       </label>
       <button class="btn" id="btnQ2" disabled onclick="goToSection('question3')">Weiter</button>
@@ -256,15 +269,15 @@
       </div>
       <p><strong>Wie wichtig ist Ihnen gutes Sehen in der Dämmerung, z.B. bei schlechten Lichtverhältnissen im Straßenverkehr?</strong></p>
       <label>
-        <input type="radio" name="q3" value="0" onclick="enableNext('btnQ3', 'progress3', 3)">
+        <input type="radio" name="q3" value="0" onclick="enableNext('btnQ3','progress3',3)">
         <b>Nicht</b> wichtig.
       </label>
       <label>
-        <input type="radio" name="q3" value="1" onclick="enableNext('btnQ3', 'progress3', 3)">
+        <input type="radio" name="q3" value="1" onclick="enableNext('btnQ3','progress3',3)">
         <b>Mittelmäßig</b> wichtig.
       </label>
       <label>
-        <input type="radio" name="q3" value="2" onclick="enableNext('btnQ3', 'progress3', 3)">
+        <input type="radio" name="q3" value="2" onclick="enableNext('btnQ3','progress3',3)">
         Das ist mir <b>besonders</b> wichtig.
       </label>
       <button class="btn" id="btnQ3" disabled onclick="goToSection('question4')">Weiter</button>
@@ -277,20 +290,43 @@
       </div>
       <p><strong>Wie stehen Sie zu Zuzahlungen für eine Intraokularlinse, die Ihren Bedürfnissen entspricht?</strong></p>
       <label>
-        <input type="radio" name="q4" value="0" onclick="enableNext('btnQ4', 'progress4', 4)">
+        <input type="radio" name="q4" value="0" onclick="enableNext('btnQ4','progress4',4)">
         Ich möchte <b>keine</b> Zuzahlungen leisten. Ich bevorzuge die Standardlinse, die von der Krankenkasse übernommen wird.
       </label>
       <label>
-        <input type="radio" name="q4" value="1" onclick="enableNext('btnQ4', 'progress4', 4)">
+        <input type="radio" name="q4" value="1" onclick="enableNext('btnQ4','progress4',4)">
         Ich bin bereit, einen <b>moderaten</b> Betrag zuzuzahlen.
       </label>
       <label>
-        <input type="radio" name="q4" value="2" onclick="enableNext('btnQ4', 'progress4', 4)">
+        <input type="radio" name="q4" value="2" onclick="enableNext('btnQ4','progress4',4)">
         Ich bin bereit, auch <b>höhere</b> Kosten zu tragen.
       </label>
-      <button class="btn" id="btnQ4" disabled onclick="calculateResult()">Ergebnis anzeigen</button>
+      <button class="btn" id="btnQ4" disabled onclick="goToSection('question5')">Weiter</button>
+    </section>
 
-      <!-- Dezent hervorgehobener Hinweis, wird sichtbar wenn "Ergebnis anzeigen" geklickt wurde -->
+    <!-- NEUE FRAGE 5: Hornhautverkrümmung -->
+    <section id="question5">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress5"></div>
+      </div>
+      <p><strong>Liegt bei Ihnen eine relevante Hornhautverkrümmung (Astigmatismus) über 1,0 dpt vor?</strong></p>
+
+      <label>
+        <input type="radio" name="q5" value="0" onclick="enableNext('btnQ5','progress5',5)">
+        <b>Nein</b>, oder nur sehr gering.
+      </label>
+      <label>
+        <input type="radio" name="q5" value="1" onclick="enableNext('btnQ5','progress5',5)">
+        <b>Ja</b>, das wurde bei mir festgestellt.
+      </label>
+      <label>
+        <input type="radio" name="q5" value="2" onclick="enableNext('btnQ5','progress5',5)">
+        <b>Weiß ich nicht</b>.
+      </label>
+
+      <button class="btn" id="btnQ5" disabled onclick="calculateResult()">Ergebnis anzeigen</button>
+
+      <!-- Hinweis erst sichtbar nach Klick -->
       <p class="hint" id="finalHint" style="display: none;">
         Hinweis:<br>
         Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen
@@ -298,7 +334,6 @@
         Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
       </p>
     </section>
-
 
 
     <!-- ========================================================= -->
@@ -313,6 +348,15 @@
         für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute
         Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.
       </p>
+
+      <!-- HINWEIS: Extra-Absatz, wird NUR eingeblendet, wenn q5=1 (Ja) -->
+      <div id="toricHintStandard" class="toric-hint">
+        <strong>Hinweis bei Hornhautverkrümmung:</strong><br>
+        Bei bestehender Hornhautverkrümmung können wir versuchen, diese 
+        während der OP durch eine spezielle Schnittführung an der Hornhaut 
+        etwas zu verringern, sofern Sie keine Mehrkosten 
+        für eine torische Linse wünschen.
+      </div>
 
       <div class="button-container">
         <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
@@ -346,6 +390,13 @@
         bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>
       </p>
 
+      <!-- Toric-Hint für Asphärische Linse -->
+      <div id="toricHintAsphaerische" class="toric-hint">
+        <strong>Hinweis bei Hornhautverkrümmung:</strong><br>
+        Diese Linse ist zur bestmöglichen Korrektur Ihrer Hornhautverkrümmung 
+        auch als torische Version erhältlich (ca. 700 €).
+      </div>
+
       <div class="button-container">
         <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
         <button class="btn" onclick="goToSection('standardLinse')">Sphärische Standardlinse</button>
@@ -378,6 +429,13 @@
         bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>
       </p>
 
+      <!-- Toric-Hint für EDOF -->
+      <div id="toricHintEdof" class="toric-hint">
+        <strong>Hinweis bei Hornhautverkrümmung:</strong><br>
+        Diese Linse ist zur bestmöglichen Korrektur Ihrer Hornhautverkrümmung 
+        auch als torische Version erhältlich (ca. 1200 €).
+      </div>
+
       <div class="button-container">
         <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
         <button class="btn" onclick="goToSection('standardLinse')">Sphärische Standardlinse</button>
@@ -395,30 +453,31 @@
 
 
     <!-- ======================================================== -->
-    <!-- B) NEUE KOMBINATIONEN-SEITEN (2-Szenarien)               -->
+    <!-- B) NEUE KOMBINATIONEN-SEITEN (2-Linsen-Szenarien)        -->
     <!-- ======================================================== -->
 
-    <!-- SZENARIO A (Keine Zuzahlung, Score > 2) => Standard + Asphärisch -->
+    <!-- Szenario A: Standard + Asphärisch -->
     <section id="scenarioStandardAsphaerisch">
       <p class="intro-two-options">
         Bei Ihnen kommen <strong>zwei</strong> <strong>Optionen</strong> in Frage:
       </p>
 
-      <!-- 1) Sphärische Standardlinse (Text unverändert, ABER ohne extra Buttons/Hint) -->
       <h1>Sphärische Standardlinse</h1>
       <p>
         Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille
         für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute
         Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.
       </p>
-      <div class="button-container" style="display: none;">
-        <!-- ausgeblendet -->
-      </div>
-      <p class="hint" style="display: none;">
-        <!-- ausgeblendet -->
-      </p>
 
-      <!-- 2) Asphärische Linse (Volltext) -->
+      <!-- Toric-Hint Standard im 2er-Szenario -->
+      <div id="toricHintScenarioStandard" class="toric-hint">
+        <strong>Hinweis bei Hornhautverkrümmung:</strong><br>
+        Bei bestehender Hornhautverkrümmung können wir versuchen, diese 
+        während der OP durch eine spezielle Schnittführung an der Hornhaut 
+        etwas zu verringern, sofern Sie keine Mehrkosten 
+        für eine torische Linse wünschen.
+      </div>
+
       <h1>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</h1>
       <p>
         Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung)
@@ -431,14 +490,21 @@
         bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>
       </p>
 
-      <!-- Buttons und Hinweis nur 1x am Ende -->
+      <!-- Toric-Hint Asphärische im 2er-Szenario -->
+      <div id="toricHintScenarioAsphaerisch" class="toric-hint">
+        <strong>Hinweis bei Hornhautverkrümmung:</strong><br>
+        Diese Linse ist zur bestmöglichen Korrektur Ihrer Hornhautverkrümmung 
+        auch als torische Version erhältlich (ca. 700 €).
+      </div>
+
       <div class="button-container">
         <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
-        <!-- Jetzt NUR EDOF-Linse, weil Standard + Asphärisch sind schon hier -->
+        <!-- Nur EDOF übrig -->
         <button class="btn" onclick="goToSection('edofLinse')">
-          EDOF-Linse
+          EDOF-Linse mit Tiefenschärfe
         </button>
       </div>
+
       <p class="hint">
         Hinweis:<br>
         Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
@@ -447,13 +513,12 @@
       </p>
     </section>
 
-    <!-- SZENARIO B (Q1=1, Q2=2, Q3=2, q4=2) => Asphärisch + EDOF -->
+    <!-- Szenario B: Asphärisch + EDOF -->
     <section id="scenarioAsphaerischEdof">
       <p class="intro-two-options">
         Bei Ihnen kommen <strong>zwei</strong> <strong>Optionen</strong> in Frage:
       </p>
 
-      <!-- Asphärische Linse (ohne "Sollten Sie..." und ohne Buttons) -->
       <h1>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</h1>
       <p>
         Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung)
@@ -461,14 +526,14 @@
         Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen
         (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).
       </p>
-      <div class="button-container" style="display: none;">
-        <!-- ausgeblendet -->
-      </div>
-      <p class="hint" style="display: none;">
-        <!-- ausgeblendet -->
-      </p>
 
-      <!-- EDOF-Linse (kompletter Text) -->
+      <!-- Toric-Hint Asphärisch im 2er-Szenario -->
+      <div id="toricHintScenarioAsphaerisch2" class="toric-hint">
+        <strong>Hinweis bei Hornhautverkrümmung:</strong><br>
+        Diese Linse ist zur bestmöglichen Korrektur Ihrer Hornhautverkrümmung 
+        auch als torische Version erhältlich (ca. 700 €).
+      </div>
+
       <h1>EDOF-Linse mit Tiefenschärfe (ca. 1000 € pro Auge)</h1>
       <p>
         Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe
@@ -485,13 +550,20 @@
         bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>
       </p>
 
-      <!-- Buttons & Hinweis am Ende -->
+      <!-- Toric-Hint EDOF im 2er-Szenario -->
+      <div id="toricHintScenarioEdof2" class="toric-hint">
+        <strong>Hinweis bei Hornhautverkrümmung:</strong><br>
+        Diese Linse ist zur bestmöglichen Korrektur Ihrer Hornhautverkrümmung 
+        auch als torische Version erhältlich (ca. 1200 €).
+      </div>
+
       <div class="button-container">
         <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
         <button class="btn" onclick="goToSection('standardLinse')">
           Sphärische Standardlinse
         </button>
       </div>
+
       <p class="hint">
         Hinweis:<br>
         Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
@@ -500,23 +572,55 @@
       </p>
     </section>
 
-    <!-- SZENARIO C (Q1=2, q4=1) => Asphärische Linse + EDOF-Linse -->
+    <!-- Szenario C (q1=2, q4=1): Asphärisch + EDOF -->
     <section id="scenarioAsphaerischEdofModerate">
       <p class="intro-two-options">
         Bei Ihnen kommen <strong>zwei</strong> <strong>Optionen</strong> in Frage:
       </p>
 
-      <!-- 1) Asphärische Linse Button -->
-      <button class="btn" onclick="goToSection('asphaerischeLinse')">
-        Asphärische Linse mit Blaufilter
-      </button>
+      <h1>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</h1>
+      <p>
+        Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung)
+        eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse.
+        Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen
+        (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).
+      </p>
 
-      <!-- 2) EDOF-Linse Button -->
-      <button class="btn" onclick="goToSection('edofLinse')">
-        EDOF-Linse mit Tiefenschärfe
-      </button>
+      <!-- Toric-Hint Asphärische -->
+      <div id="toricHintScenarioAsphaerisch3" class="toric-hint">
+        <strong>Hinweis bei Hornhautverkrümmung:</strong><br>
+        Diese Linse ist zur bestmöglichen Korrektur Ihrer Hornhautverkrümmung 
+        auch als torische Version erhältlich (ca. 700 €).
+      </div>
 
-      <!-- Hinweis nur einmal am Ende -->
+      <h1>EDOF-Linse mit Tiefenschärfe (ca. 1000 € pro Auge)</h1>
+      <p>
+        Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe
+        vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen
+        in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.
+      </p>
+      <p>
+        Im Vergleich zu einer asphärischen Linse mit Blaufilter kann in seltenen Fällen neben störenden Lichtphänomenen
+        das Kontrastsehen geringfügig schlechter sein. In der Regel ist diese Linse jedoch ein guter Kompromiss
+        zwischen weitgehender Brillenunabhängigkeit und guter Sicht in der Ferne.
+      </p>
+      <p>
+        <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch,
+        bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>
+      </p>
+
+      <!-- Toric-Hint EDOF -->
+      <div id="toricHintScenarioEdof3" class="toric-hint">
+        <strong>Hinweis bei Hornhautverkrümmung:</strong><br>
+        Diese Linse ist zur bestmöglichen Korrektur Ihrer Hornhautverkrümmung 
+        auch als torische Version erhältlich (ca. 1200 €).
+      </div>
+
+      <div class="button-container">
+        <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
+        <button class="btn" onclick="goToSection('standardLinse')">Sphärische Standardlinse</button>
+      </div>
+
       <p class="hint">
         Hinweis:<br>
         Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
@@ -525,7 +629,7 @@
       </p>
     </section>
 
-  </div>
+  </div><!-- .container -->
 
   <script>
     /*****************************************************
@@ -549,12 +653,21 @@
       q2: null,
       q3: null,
       q4: null,
+      q5: null  // Neu (Astigmatismus)
     };
 
     function goToSection(sectionId) {
+      // Alle Sections verstecken
       const sections = document.querySelectorAll("section");
       sections.forEach(sec => sec.classList.remove("active"));
+
+      // Gewählte Section anzeigen
       document.getElementById(sectionId).classList.add("active");
+
+      // Ggf. Toric-Hints einblenden, falls q5=1
+      showToricHintsIfNeeded(sectionId);
+
+      // Nach oben scrollen
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -570,8 +683,8 @@
       const val = document.querySelector(`input[name='${name}']:checked`).value;
       userAnswers[name] = parseInt(val, 10);
 
-      // Fortschrittsbalken aktualisieren
-      const totalQuestions = 4;
+      // Fortschrittsbalken aktualisieren (insgesamt 5 Fragen)
+      const totalQuestions = 5;
       const progressValue = (questionNumber / totalQuestions) * 100;
       const progressBar = document.getElementById(progressId);
       progressBar.style.width = progressValue + "%";
@@ -581,29 +694,30 @@
      * 4) Ergebnis berechnen + Spezialfälle
      *****************************************************/
     function calculateResult() {
-      const { q1, q2, q3, q4 } = userAnswers;
+      const { q1, q2, q3, q4, q5 } = userAnswers;
 
-      // Hinweis in question4 einblenden
+      // Hinweis in question5 anzeigen
       document.getElementById("finalHint").style.display = "block";
 
-      // 1) Spezialfall: Alle 4 Antworten = 0 => nur Standardlinse
-      if (q1 === 0 && q2 === 0 && q3 === 0 && q4 === 0) {
+      // Deine bisherige Score-Logik
+      // => Hier exemplarisch (ggf. anpassen an deinen Original-Code)
+
+      // 1) Spezialfall: Alle 4 Antworten=0 => Standard
+      if (q1===0 && q2===0 && q3===0 && q4===0) {
         goToSection("standardLinse");
         return;
       }
 
-      // 2) Spezialfall: q1=2 und q4=1 => Asphärische Linse + EDOF-Linse als separate Optionen
-      if (q1 === 2 && q4 === 1) {
+      // 2) q1=2 & q4=1 => scenarioAsphaerischEdofModerate
+      if (q1===2 && q4===1) {
         goToSection("scenarioAsphaerischEdofModerate");
         return;
       }
 
-      // 3) Wenn q4=0, prüfen wir den Score:
-      //    - wenn Score <=2 => nur Standardlinse
-      //    - sonst (Score>2) => scenarioStandardAsphaerisch
-      if (q4 === 0) {
-        const score = (q1 ?? 0) + (q2 ?? 0) + (q3 ?? 0) + (q4 ?? 0);
-        if (score <= 2) {
+      // 3) q4=0 => Score <=2 => standard, >2 => scenarioStandardAsphaerisch
+      const score = (q1??0) + (q2??0) + (q3??0) + (q4??0);
+      if (q4===0) {
+        if (score<=2) {
           goToSection("standardLinse");
           return;
         } else {
@@ -612,28 +726,47 @@
         }
       }
 
-      // 4) Szenario B: q1=1, q2=2, q3=2, q4=2 => Asphärische Linse + EDOF-Linse + Button zur Standardlinse
-      if (q1 === 1 && q2 === 2 && q3 === 2 && q4 === 2) {
+      // Neu: wenn Score <=2 und q4=1/2 => scenarioStandardAsphaerisch
+      if (score<=2 && (q4===1 || q4===2)) {
+        goToSection("scenarioStandardAsphaerisch");
+        return;
+      }
+
+      // 4) Szenario B
+      if (q1===1 && q2===2 && q3===2 && q4===2) {
         goToSection("scenarioAsphaerischEdof");
         return;
       }
 
-      // 5) Wenn q1=2 und q4=2 => immer EDOF-Linse anzeigen
-      //    (sofern es nicht Szenario B ist, das bereits oben abgefangen wurde)
-      if (q1 === 2 && q4 === 2) {
+      // 5) q1=2 & q4=2 => EDOF
+      if (q1===2 && q4===2) {
         goToSection("edofLinse");
         return;
       }
 
-      // 6) Ansonsten alte Score-Logik
-      const score = (q1 ?? 0) + (q2 ?? 0) + (q3 ?? 0) + (q4 ?? 0);
-      if (score <= 2) {
+      // 6) Standard Score-Logik
+      if (score<=2) {
         goToSection("standardLinse");
-      } else if (score <= 6) {
+      } else if (score<=6) {
         goToSection("asphaerischeLinse");
       } else {
         goToSection("edofLinse");
       }
+    }
+
+    /*****************************************************
+     * 5) Toric-Hints einblenden, falls q5=1
+     *****************************************************/
+    function showToricHintsIfNeeded(sectionId) {
+      // Nur wenn q5 === 1 ("Ja"), zeigen wir die Toric-Hints an
+      if (userAnswers.q5 !== 1) return;
+
+      // In der aktiven Section alle .toric-hint-Elemente einblenden
+      const activeSection = document.getElementById(sectionId);
+      const toricElements = activeSection.querySelectorAll(".toric-hint");
+      toricElements.forEach(elem => {
+        elem.style.display = "block";
+      });
     }
   </script>
 </body>

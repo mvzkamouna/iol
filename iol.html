@@ -2,11 +2,8 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <!-- Ermöglicht Responsivität und freies Zoomen -->
+  <!-- Responsives Layout + freies Zoomen -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- (Optional) Apple Touch Icon (ersetze 'touch-icon-iphone.png' durch dein eigenes Icon) -->
-  <!-- <link rel="apple-touch-icon" href="touch-icon-iphone.png"> -->
 
   <title>Fragebogen zur Intraokularlinse</title>
   <style>
@@ -92,17 +89,30 @@
       margin-bottom: 15px;
       cursor: pointer;
       font-size: var(--base-font-size);
-      text-align: left; /* linksbündig für bessere Lesbarkeit */
+      text-align: left;
     }
     input[type="radio"] {
       margin-right: 10px;
       transform: scale(1.2);
     }
 
+    /* Schriftgrößen-Container */
     .font-size-adjuster {
       margin-bottom: 30px;
       text-align: center;
     }
+
+    /* NEUES DESIGN FÜR "Schriftgröße" */
+    .font-size-title {
+      display: block;
+      text-align: center; 
+      font-weight: bold;
+      font-size: 24px;      /* Schriftgröße anpassen nach Geschmack */
+      color: #777;          /* Hellgrauer Text */
+      margin: 0 auto 10px;  /* Abstand unten */
+      padding: 0;           
+    }
+
     .font-size-adjuster button {
       margin: 0 5px;
       padding: 10px 20px;
@@ -132,19 +142,18 @@
       transition: width 0.3s ease;
     }
 
-    /* Dezenter, besser lesbarer Hinweis-Kasten */
+    /* Dezenter Hinweis-Kasten */
     .hint {
       margin-top: 30px;
       font-size: 16px;
       background-color: #fff3cd; /* Helles Gelb/Orange */
       color: #856404;           /* Dunklerer Textton */
-      border-left: 6px solid #ffa502; 
+      border-left: 6px solid #ffa502;
       padding: 15px;
       border-radius: 8px;
       text-align: left;
     }
 
-    /* Container für mehrere Buttons nebeneinander */
     .button-container {
       display: flex;
       flex-wrap: wrap;
@@ -168,9 +177,10 @@
 <body>
   <div class="container">
 
-    <!-- Schriftgrößen-Anpassung -->
+    <!-- 1) Schriftgrößen-Anpassung mit 3 Buttons -->
     <div class="font-size-adjuster">
-      <label>Schriftgröße:</label>
+      <!-- Neu gestaltetes Wort "Schriftgröße" -->
+      <div class="font-size-title">Schriftgröße</div>
       <button onclick="adjustFontSize('small')">Kleiner</button>
       <button onclick="adjustFontSize('normal')">Normal</button>
       <button onclick="adjustFontSize('large')">Größer</button>
@@ -373,17 +383,7 @@
 
   <script>
     /*****************************************************
-     * Globale Variablen für Antworten
-     *****************************************************/
-    const userAnswers = {
-      q1: null,
-      q2: null,
-      q3: null,
-      q4: null,
-    };
-
-    /*****************************************************
-     * Schriftgröße
+     * 1) Schriftgröße anpassen
      *****************************************************/
     function adjustFontSize(size) {
       if (size === "small") {
@@ -396,32 +396,37 @@
     }
 
     /*****************************************************
-     * Sections anzeigen/verstecken
+     * 2) Globale Antworten & Abschnitt-Wechsel
      *****************************************************/
+    const userAnswers = {
+      q1: null,
+      q2: null,
+      q3: null,
+      q4: null,
+    };
+
+    // Sections ein-/ausblenden
     function goToSection(sectionId) {
-      // Alle Sections ausblenden
       const sections = document.querySelectorAll("section");
       sections.forEach(sec => sec.classList.remove("active"));
-      // Gewünschte Section einblenden
       document.getElementById(sectionId).classList.add("active");
-      // Nach oben scrollen
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     /*****************************************************
-     * Button aktivieren + Fortschrittsbalken
+     * 3) Button aktivieren + Fortschrittsbalken
      *****************************************************/
     function enableNext(buttonId, progressId, questionNumber) {
       // Button aktivieren
       const btn = document.getElementById(buttonId);
       btn.disabled = false;
 
-      // Antwortwert speichern
+      // Antwort speichern
       const name = "q" + questionNumber;
       const val = document.querySelector(`input[name='${name}']:checked`).value;
       userAnswers[name] = parseInt(val, 10);
 
-      // Fortschritt (z.B. questionNumber / 4 = 25, 50, 75, 100)
+      // Fortschrittsbalken aktualisieren
       const totalQuestions = 4;
       const progressValue = (questionNumber / totalQuestions) * 100;
       const progressBar = document.getElementById(progressId);
@@ -429,16 +434,15 @@
     }
 
     /*****************************************************
-     * Ergebnis berechnen und weiterleiten
+     * 4) Ergebnis berechnen
      *****************************************************/
     function calculateResult() {
       const { q1, q2, q3, q4 } = userAnswers;
       const score = (q1 ?? 0) + (q2 ?? 0) + (q3 ?? 0) + (q4 ?? 0);
 
-      // Hinweis unter Frage 4 einblenden
+      // Hinweis in question4 einblenden
       document.getElementById("finalHint").style.display = "block";
 
-      // Grenzen anpassen, wenn gewünscht
       if (score <= 2) {
         goToSection("standardLinse");
       } else if (score <= 6) {

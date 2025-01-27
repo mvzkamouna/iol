@@ -12,6 +12,7 @@
       --button-padding: 15px;
       --container-padding: 30px;
       --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
       --progress-bar-height: 10px;
       --progress-bar-color: #76a659;
       --progress-bar-background: #e0e0e0;
@@ -62,7 +63,7 @@
 
     .btn {
       display: block;
-      width: calc(100% - 20px);
+      width: 100%;
       max-width: 400px;
       padding: var(--button-padding);
       background-color: #93c47d;
@@ -102,15 +103,14 @@
       text-align: center;
     }
 
-    /* NEUES DESIGN FÜR "Schriftgröße" */
     .font-size-title {
       display: block;
       text-align: center; 
       font-weight: bold;
-      font-size: 24px;      /* Schriftgröße anpassen nach Geschmack */
-      color: #777;          /* Hellgrauer Text */
-      margin: 0 auto 10px;  /* Abstand unten */
-      padding: 0;           
+      font-size: 24px;     
+      color: #777;         
+      margin: 0 auto 10px; 
+      padding: 0;          
     }
 
     .font-size-adjuster button {
@@ -172,6 +172,14 @@
         font-size: 20px;
       }
     }
+
+    /* Fett-Formatierung für "zwei" und "Optionen" */
+    .intro-two-options {
+      margin-bottom: 20px;
+    }
+    .intro-two-options strong {
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -179,7 +187,6 @@
 
     <!-- 1) Schriftgrößen-Anpassung mit 3 Buttons -->
     <div class="font-size-adjuster">
-      <!-- Neu gestaltetes Wort "Schriftgröße" -->
       <div class="font-size-title">Schriftgröße</div>
       <button onclick="adjustFontSize('small')">Kleiner</button>
       <button onclick="adjustFontSize('normal')">Normal</button>
@@ -292,6 +299,12 @@
       </p>
     </section>
 
+
+
+    <!-- ========================================================= -->
+    <!-- A) ORIGINALE EINZEL-SEITEN (NICHT KÜRZEN, 1:1 BEHALTEN!)   -->
+    <!-- ========================================================= -->
+
     <!-- SECTION: STANDARDLINSE -->
     <section id="standardLinse">
       <h1>Sphärische Standardlinse</h1>
@@ -311,7 +324,6 @@
         </button>
       </div>
 
-      <!-- Eleganter Hinweis-Kasten -->
       <p class="hint">
         Hinweis:<br>
         Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
@@ -379,6 +391,140 @@
         Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
       </p>
     </section>
+
+
+
+    <!-- ======================================================== -->
+    <!-- B) NEUE KOMBINATIONEN-SEITEN (2-Szenarien)               -->
+    <!-- ======================================================== -->
+
+    <!-- SZENARIO A (Keine Zuzahlung, Score > 2) => Standard + Asphärisch -->
+    <section id="scenarioStandardAsphaerisch">
+      <p class="intro-two-options">
+        Bei Ihnen kommen <strong>zwei</strong> <strong>Optionen</strong> in Frage:
+      </p>
+
+      <!-- 1) Sphärische Standardlinse (Text unverändert, ABER ohne extra Buttons/Hint) -->
+      <h1>Sphärische Standardlinse</h1>
+      <p>
+        Sie legen Wert auf eine kostengünstige Lösung und sind mit der Notwendigkeit einer Brille
+        für die meisten Entfernungen einverstanden. Die sphärische Standardlinse bietet eine gute
+        Sehqualität für eine Entfernung und wird von der Krankenkasse übernommen.
+      </p>
+      <div class="button-container" style="display: none;">
+        <!-- ausgeblendet -->
+      </div>
+      <p class="hint" style="display: none;">
+        <!-- ausgeblendet -->
+      </p>
+
+      <!-- 2) Asphärische Linse (Volltext) -->
+      <h1>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</h1>
+      <p>
+        Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung)
+        eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse.
+        Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen
+        (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).
+      </p>
+      <p>
+        <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch,
+        bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>
+      </p>
+
+      <!-- Buttons und Hinweis nur 1x am Ende -->
+      <div class="button-container">
+        <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
+        <!-- Jetzt NUR EDOF-Linse, weil Standard + Asphärisch sind schon hier -->
+        <button class="btn" onclick="goToSection('edofLinse')">
+          EDOF-Linse
+        </button>
+      </div>
+      <p class="hint">
+        Hinweis:<br>
+        Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
+        möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe.
+        Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
+      </p>
+    </section>
+
+    <!-- SZENARIO B (Q1=1, Q2=2, Q3=2, q4=2) => Asphärisch + EDOF -->
+    <section id="scenarioAsphaerischEdof">
+      <p class="intro-two-options">
+        Bei Ihnen kommen <strong>zwei</strong> <strong>Optionen</strong> in Frage:
+      </p>
+
+      <!-- Asphärische Linse (ohne "Sollten Sie..." und ohne Buttons) -->
+      <h1>Asphärische Linse mit Blaufilter (ca. 250 € pro Auge)</h1>
+      <p>
+        Diese Linse bietet insbesondere bei schlechten Lichtverhältnissen (z.B. Autofahren in der Dämmerung)
+        eine verbesserte optische Abbildungsqualität im Vergleich zur Standardlinse.
+        Bei einigen Patienten können wir auch diese Linse mit leicht verbesserter Tiefenschärfe einsetzen
+        (Gleitsicht- oder Lesebrille jedoch meistens erforderlich).
+      </p>
+      <div class="button-container" style="display: none;">
+        <!-- ausgeblendet -->
+      </div>
+      <p class="hint" style="display: none;">
+        <!-- ausgeblendet -->
+      </p>
+
+      <!-- EDOF-Linse (kompletter Text) -->
+      <h1>EDOF-Linse mit Tiefenschärfe (ca. 1000 € pro Auge)</h1>
+      <p>
+        Diese Linse ermöglicht Ihnen neben gutem Sehen in der Ferne eine deutlich erweiterte Tiefenschärfe
+        vor allem in mittlerer Entfernung, z.B. beim Autofahren oder am Computer. Allerdings ist für das Lesen
+        in der Nähe in den meisten Fällen weiterhin eine Lesebrille erforderlich.
+      </p>
+      <p>
+        Im Vergleich zu einer asphärischen Linse mit Blaufilter kann in seltenen Fällen neben störenden Lichtphänomenen
+        das Kontrastsehen geringfügig schlechter sein. In der Regel ist diese Linse jedoch ein guter Kompromiss
+        zwischen weitgehender Brillenunabhängigkeit und guter Sicht in der Ferne.
+      </p>
+      <p>
+        <strong>Sollten Sie an dieser Linse interessiert sein, führen wir gerne vorab weitere Untersuchungen durch,
+        bevor Sie alles Weitere mit unseren Ärzten besprechen.</strong>
+      </p>
+
+      <!-- Buttons & Hinweis am Ende -->
+      <div class="button-container">
+        <p><em>Möchten Sie mehr über andere Linsen erfahren?</em></p>
+        <button class="btn" onclick="goToSection('standardLinse')">
+          Sphärische Standardlinse
+        </button>
+      </div>
+      <p class="hint">
+        Hinweis:<br>
+        Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
+        möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe.
+        Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
+      </p>
+    </section>
+
+    <!-- SZENARIO C (Q1=2, q4=1) => Asphärische Linse + EDOF-Linse -->
+    <section id="scenarioAsphaerischEdofModerate">
+      <p class="intro-two-options">
+        Bei Ihnen kommen <strong>zwei</strong> <strong>Optionen</strong> in Frage:
+      </p>
+
+      <!-- 1) Asphärische Linse Button -->
+      <button class="btn" onclick="goToSection('asphaerischeLinse')">
+        Asphärische Linse mit Blaufilter
+      </button>
+
+      <!-- 2) EDOF-Linse Button -->
+      <button class="btn" onclick="goToSection('edofLinse')">
+        EDOF-Linse mit Tiefenschärfe
+      </button>
+
+      <!-- Hinweis nur einmal am Ende -->
+      <p class="hint">
+        Hinweis:<br>
+        Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
+        möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe.
+        Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
+      </p>
+    </section>
+
   </div>
 
   <script>
@@ -405,7 +551,6 @@
       q4: null,
     };
 
-    // Sections ein-/ausblenden
     function goToSection(sectionId) {
       const sections = document.querySelectorAll("section");
       sections.forEach(sec => sec.classList.remove("active"));
@@ -417,7 +562,6 @@
      * 3) Button aktivieren + Fortschrittsbalken
      *****************************************************/
     function enableNext(buttonId, progressId, questionNumber) {
-      // Button aktivieren
       const btn = document.getElementById(buttonId);
       btn.disabled = false;
 
@@ -434,15 +578,55 @@
     }
 
     /*****************************************************
-     * 4) Ergebnis berechnen
+     * 4) Ergebnis berechnen + Spezialfälle
      *****************************************************/
     function calculateResult() {
       const { q1, q2, q3, q4 } = userAnswers;
-      const score = (q1 ?? 0) + (q2 ?? 0) + (q3 ?? 0) + (q4 ?? 0);
 
       // Hinweis in question4 einblenden
       document.getElementById("finalHint").style.display = "block";
 
+      // 1) Spezialfall: Alle 4 Antworten = 0 => nur Standardlinse
+      if (q1 === 0 && q2 === 0 && q3 === 0 && q4 === 0) {
+        goToSection("standardLinse");
+        return;
+      }
+
+      // 2) Spezialfall: q1=2 und q4=1 => Asphärische Linse + EDOF-Linse als separate Optionen
+      if (q1 === 2 && q4 === 1) {
+        goToSection("scenarioAsphaerischEdofModerate");
+        return;
+      }
+
+      // 3) Wenn q4=0, prüfen wir den Score:
+      //    - wenn Score <=2 => nur Standardlinse
+      //    - sonst (Score>2) => scenarioStandardAsphaerisch
+      if (q4 === 0) {
+        const score = (q1 ?? 0) + (q2 ?? 0) + (q3 ?? 0) + (q4 ?? 0);
+        if (score <= 2) {
+          goToSection("standardLinse");
+          return;
+        } else {
+          goToSection("scenarioStandardAsphaerisch");
+          return;
+        }
+      }
+
+      // 4) Szenario B: q1=1, q2=2, q3=2, q4=2 => Asphärische Linse + EDOF-Linse + Button zur Standardlinse
+      if (q1 === 1 && q2 === 2 && q3 === 2 && q4 === 2) {
+        goToSection("scenarioAsphaerischEdof");
+        return;
+      }
+
+      // 5) Wenn q1=2 und q4=2 => immer EDOF-Linse anzeigen
+      //    (sofern es nicht Szenario B ist, das bereits oben abgefangen wurde)
+      if (q1 === 2 && q4 === 2) {
+        goToSection("edofLinse");
+        return;
+      }
+
+      // 6) Ansonsten alte Score-Logik
+      const score = (q1 ?? 0) + (q2 ?? 0) + (q3 ?? 0) + (q4 ?? 0);
       if (score <= 2) {
         goToSection("standardLinse");
       } else if (score <= 6) {

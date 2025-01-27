@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta charset="UTF-8">
+  <!-- Ermöglicht Responsivität und freies Zoomen -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- (Optional) Apple Touch Icon (ersetze 'touch-icon-iphone.png' durch dein eigenes Icon) -->
+  <!-- <link rel="apple-touch-icon" href="touch-icon-iphone.png"> -->
+
   <title>Fragebogen zur Intraokularlinse</title>
   <style>
     :root {
@@ -39,12 +44,11 @@
       box-sizing: border-box;
     }
 
-    /* Überschriften zentriert */
+    /* Überschrift zentriert, Absätze linksbündig */
     h1 {
       text-align: center;
       margin-top: 0;
     }
-    /* Absätze linksbündig für bessere Lesbarkeit */
     p {
       text-align: left;
       margin-top: 0;
@@ -88,9 +92,8 @@
       margin-bottom: 15px;
       cursor: pointer;
       font-size: var(--base-font-size);
-      text-align: left; /* Auch Label-Text linksbündig */
+      text-align: left; /* linksbündig für bessere Lesbarkeit */
     }
-
     input[type="radio"] {
       margin-right: 10px;
       transform: scale(1.2);
@@ -100,7 +103,6 @@
       margin-bottom: 30px;
       text-align: center;
     }
-
     .font-size-adjuster button {
       margin: 0 5px;
       padding: 10px 20px;
@@ -130,13 +132,19 @@
       transition: width 0.3s ease;
     }
 
+    /* Dezenter, besser lesbarer Hinweis-Kasten */
     .hint {
       margin-top: 30px;
       font-size: 16px;
-      color: red;
+      background-color: #fff3cd; /* Helles Gelb/Orange */
+      color: #856404;           /* Dunklerer Textton */
+      border-left: 6px solid #ffa502; 
+      padding: 15px;
+      border-radius: 8px;
       text-align: left;
     }
 
+    /* Container für mehrere Buttons nebeneinander */
     .button-container {
       display: flex;
       flex-wrap: wrap;
@@ -145,6 +153,16 @@
       margin-top: 20px;
     }
 
+    /* Kleinere Anpassungen für Tablet / iPad ab 768px */
+    @media (min-width: 768px) {
+      .container {
+        max-width: 900px;
+        padding: 40px;
+      }
+      .btn {
+        font-size: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -255,9 +273,9 @@
       </label>
       <button class="btn" id="btnQ4" disabled onclick="calculateResult()">Ergebnis anzeigen</button>
 
-      <!-- Hinweis nur informativ, wird hier automatisch eingeblendet -->
+      <!-- Dezent hervorgehobener Hinweis, wird sichtbar wenn "Ergebnis anzeigen" geklickt wurde -->
       <p class="hint" id="finalHint" style="display: none;">
-        Hinweis:<br />
+        Hinweis:<br>
         Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen
         und möglichen weiteren Augenerkrankungen ab. Dieser Fragebogen dient nur als Orientierungshilfe.
         Eine sichere Brillenfreiheit nach der OP können wir nicht garantieren.
@@ -283,7 +301,7 @@
         </button>
       </div>
 
-      <!-- Roter Hinweis am Seitenende -->
+      <!-- Eleganter Hinweis-Kasten -->
       <p class="hint">
         Hinweis:<br>
         Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
@@ -312,7 +330,6 @@
         <button class="btn" onclick="goToSection('edofLinse')">EDOF-Linse mit Tiefenschärfe</button>
       </div>
 
-      <!-- Roter Hinweis -->
       <p class="hint">
         Hinweis:<br>
         Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
@@ -345,7 +362,6 @@
         <button class="btn" onclick="goToSection('asphaerischeLinse')">Asphärische Linse</button>
       </div>
 
-      <!-- Roter Hinweis -->
       <p class="hint">
         Hinweis:<br>
         Welche Linse für Sie am besten geeignet ist, hängt von Ihren individuellen Bedürfnissen und
@@ -405,7 +421,7 @@
       const val = document.querySelector(`input[name='${name}']:checked`).value;
       userAnswers[name] = parseInt(val, 10);
 
-      // Fortschritt (z.B. questionNumber / 4)
+      // Fortschritt (z.B. questionNumber / 4 = 25, 50, 75, 100)
       const totalQuestions = 4;
       const progressValue = (questionNumber / totalQuestions) * 100;
       const progressBar = document.getElementById(progressId);

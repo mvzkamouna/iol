@@ -193,6 +193,29 @@
     .toric-hint strong {
       color: #317b2b;
     }
+
+    /* Datenschutzerklärung-Link */
+    .privacy-toggle {
+      color: grey;
+      font-size: var(--base-font-size);
+      text-align: center;
+      cursor: pointer;
+      margin: 20px auto;
+      width: fit-content;
+      display: block;
+    }
+    .privacy-toggle:hover {
+      text-decoration: underline;
+    }
+    .privacy-content {
+      display: none;
+      margin-top: 10px;
+      font-size: var(--base-font-size);
+      line-height: 1.4;
+    }
+    .privacy-content p {
+      margin: 5px 0;
+    }
   </style>
 </head>
 <body>
@@ -218,6 +241,35 @@
         die in unserer Klinik eingesetzt werden.
       </p>
       <button class="btn" onclick="goToSection('question1')">Fragebogen starten</button>
+
+      <!-- Toggle-Element für Datenschutzerklärung -->
+      <span class="privacy-toggle" onclick="toggleDatenschutz()">Datenschutzerklärung</span>
+      <div class="privacy-content" id="privacyContent">
+        <p><strong>Datenschutzerklärung</strong></p>
+        <p>
+          Wir nehmen den Schutz Ihrer personenbezogenen Daten sehr ernst. Nachfolgend informieren wir Sie
+          über die Erhebung, Verarbeitung und Nutzung von Daten im Rahmen dieses Fragebogens:
+        </p>
+        <p><strong>1. Erhebung und Speicherung von Daten</strong><br>
+          Bei der Nutzung dieses Fragebogens werden von uns keine personenbezogenen Daten wie Name, E-Mail-Adresse 
+          oder andere identifizierende Informationen erhoben, gespeichert oder verarbeitet.
+        </p>
+        <p><strong>2. Verarbeitung durch den Webhoster</strong><br>
+          Unsere Website wird über GitHub Pages gehostet. GitHub kann technische Daten wie IP-Adressen der Besucher 
+          zu eigenen Zwecken erfassen und speichern. Dies erfolgt beispielsweise aus Sicherheitsgründen und zur 
+          Verbesserung der Dienste. Weitere Informationen dazu finden Sie in der Datenschutzerklärung von GitHub.
+        </p>
+        <p><strong>3. Keine Weitergabe von Daten</strong><br>
+          Es erfolgt keinerlei Weitergabe von Daten an Dritte durch uns. Sollten Daten durch den Webhoster verarbeitet 
+          werden, erfolgt dies unabhängig von unserem Einfluss.
+        </p>
+        <p><strong>4. Rechte der Nutzer</strong><br>
+          Sie haben das Recht, Auskunft über die von Ihnen gespeicherten Daten zu erhalten sowie deren Berichtigung, 
+          Löschung oder Einschränkung der Verarbeitung zu verlangen. Da wir selbst keine personenbezogenen Daten 
+          verarbeiten, empfehlen wir Ihnen, sich bei Fragen zur Datenverarbeitung durch GitHub direkt an den Anbieter 
+          zu wenden.
+        </p>
+      </div>
     </section>
 
     <!-- SECTION: QUESTION 1 -->
@@ -699,8 +751,7 @@
       // Hinweis in question5 anzeigen
       document.getElementById("finalHint").style.display = "block";
 
-      // Deine bisherige Score-Logik
-      // => Hier exemplarisch (ggf. anpassen an deinen Original-Code)
+      // Bisherige Beispiel-Score-Logik
 
       // 1) Spezialfall: Alle 4 Antworten=0 => Standard
       if (q1===0 && q2===0 && q3===0 && q4===0) {
@@ -767,6 +818,18 @@
       toricElements.forEach(elem => {
         elem.style.display = "block";
       });
+    }
+
+    /*****************************************************
+     * 6) Datenschutzerklärung ein-/ausblenden
+     *****************************************************/
+    function toggleDatenschutz() {
+      const content = document.getElementById("privacyContent");
+      if (content.style.display === "none" || content.style.display === "") {
+        content.style.display = "block";
+      } else {
+        content.style.display = "none";
+      }
     }
   </script>
 </body>
